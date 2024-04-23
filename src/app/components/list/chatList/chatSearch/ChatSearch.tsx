@@ -1,0 +1,45 @@
+/*  2024-04-23 22:38:51
+
+
+*/
+
+import React from "react";
+import { CiSearch } from "react-icons/ci";
+import { GoDash, GoPlus } from "react-icons/go";
+
+type ChatSearchProps = {
+  setSearchStr: (searchString: string) => void;
+  addMode: boolean;
+  handleSearchAdd: () => void;
+};
+
+const ChatSearch = ({
+  setSearchStr,
+  addMode,
+  handleSearchAdd,
+}: ChatSearchProps) => {
+  return (
+    <>
+      <div className="search flex flex-row items-center justify-between gap-2">
+        <div className="searchBar flex flex-row gap-2 p-2 rounded-md">
+          <CiSearch className="w-7 h-7" />
+          <input
+            type="text"
+            placeholder="search"
+            className="w-5/6 bg-transparent"
+            onChange={(e) => setSearchStr(e.target.value)}
+          />
+        </div>
+        <div className="searchAddBtn p-2 rounded-2xl" onClick={handleSearchAdd}>
+          {addMode ? (
+            <GoDash className="w-7 h-7 text-white border-0 outline-0" />
+          ) : (
+            <GoPlus className="w-7 h-7 text-white border-0 outline-0" />
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ChatSearch;

@@ -1,0 +1,13 @@
+
+.chatInput {
+    background-color: rgba(31, 41, 61, 0.5);
+}
+.emoji-wrapper {
+    background-color: rgba(31, 41, 61, 0.5);
+}
+.chat-body {
+    background-color: rgba(31, 41, 61, 0.5);
+}
+.ownMessage {
+    background-color: rgba(11, 40, 105, 0.5);
+}
