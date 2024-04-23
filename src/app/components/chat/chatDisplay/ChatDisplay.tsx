@@ -27,6 +27,7 @@ const initChats = [
     lastMessage: `우성아..
     오늘도 고생했어`,
     time: "12min ago",
+    unread: true,
   },
 ];
 
@@ -56,7 +57,9 @@ const ChatDisplay = () => {
 
             <p
               className={`chat-body whitespace-pre-line p-4 text-sm font-extralight text-gray-100 rounded-md 
-            ${chat.own ? "ownMessage" : ""}`}
+            ${chat.own ? "ownMessage" : "notOwn"}
+            ${chat.unread ? "unreadMessage" : ""}
+            `}
             >
               {chat.lastMessage}
             </p>

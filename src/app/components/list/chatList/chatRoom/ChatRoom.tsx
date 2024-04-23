@@ -9,22 +9,18 @@ import React, { useContext } from "react";
 type ChatRoomProps = {
   name: string;
   lastMessage: string;
+  unread?: boolean;
 };
 
 const ChatRoom = ({ name, lastMessage }: ChatRoomProps) => {
-  const chatUserContext = useContext(ChatUserContext);
-
-  if (!chatUserContext)
-    throw new Error(
-      "You probably forgot to put <ChatUserContextComponent> around your component tree"
-    );
-
-  const { userName, setUserName } = chatUserContext;
+  const { userName, setUserName, unread } = useContext(ChatUserContext);
 
   return (
     <div className="chatItems border-b border-gray-500 py-4">
       <div
-        className="chatItem flex flex-row items-center gap-5 p-2"
+        className={`chatItem flex flex-row items-center gap-5 p-2
+        ${unread ? "unreadChat" : ""}
+        `}
         onClick={(e) => setUserName(name)}
       >
         <img

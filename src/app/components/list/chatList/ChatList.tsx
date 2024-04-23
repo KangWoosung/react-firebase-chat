@@ -27,11 +27,13 @@ const usersInit = [
   {
     name: "이 미화",
     lastMessage: "우성아..",
+    unread: true,
   },
 ];
 type UsersType = {
   name: string;
   lastMessage: string;
+  unread?: boolean;
 };
 
 const ChatList = () => {
@@ -70,6 +72,7 @@ const ChatList = () => {
               key={index}
               name={user.name}
               lastMessage={user.lastMessage}
+              unread={user.unread}
             />
           );
         })}

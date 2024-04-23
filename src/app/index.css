@@ -1,4 +1,13 @@
 
+:root {
+    --backgrounc-color: rgba(35, 43, 68, 0.75);
+    --border-color: rgba(255, 255, 255, 0.125);
+    --input-background-color: rgba(31, 41, 61);
+    --chat-bubble-background-color: rgba(31, 41, 61, 0.5);
+    --undone-background-color: rgba(15, 72, 170, 0.7);
+    --font-size: 16px;
+  }
+
 .wrapper {
     width: 100vw;
     height: 100vh;
@@ -8,8 +17,8 @@
 .container {
     width: 90%;
     height: 90%;
-    background-color: rgba(35, 43, 68, 0.75);
+    background-color: var(--backgrounc-color);
     backdrop-filter: blur(10px) saturate(180%);
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
+    border: 1px solid var(--border-color);
 }
