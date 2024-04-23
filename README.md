@@ -11,6 +11,7 @@ https://github.com/safak/react-firebase-chat
 
 
 I am refactoring his code with TypeScript, Tailwind and some React Libs like React-Hook-Form, Zod etc. 
+
 And Zustand was replaced with React Context API as well.
 
 Thanks again to Lama Dev for the lecture. It was a big step forward for me.
