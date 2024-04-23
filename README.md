@@ -3,20 +3,29 @@
 2024-04-24 07:23:55
 
 ##The base code here is from 
+
 https://www.youtube.com/watch?v=domt_Sx-wTY&t=779s&ab_channel=LamaDev
+
 https://github.com/safak/react-firebase-chat
 
 
-I am refactoring his code with TypeScript, Tailwind and some React Libs like React-Hook-Form, Zod etc. And Zustand was replaced with React Context API as well.
+
+I am refactoring his code with TypeScript, Tailwind and some React Libs like React-Hook-Form, Zod etc. 
+And Zustand was replaced with React Context API as well.
+
 Thanks again to Lama Dev for the lecture. It was a big step forward for me.
 
-##This App requires Firebase API Key.
+
+## This App requires Firebase API Key.
+
 Add the API Key to .env.local file and don't forget to add it to .gitignore. 
+
 ```bash
 FIREBASE_API_KEY=[YOUR API KEY]
 ```
 
 API Key can be called with the following
+
 ```bash
 process.env.FIREBASE_API_KEY
 ```
