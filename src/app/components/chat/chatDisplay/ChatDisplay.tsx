@@ -3,38 +3,20 @@
 
 */
 
-const initChats = [
-  {
-    name: "Jane Doe",
-    lastMessage: "I miss you",
-    own: true,
-    time: "1hour ago",
-  },
-  {
-    name: "John Doe",
-    lastMessage: "what the..",
-    own: true,
-    time: "1hour ago",
-  },
-  {
-    name: "전 혜진",
-    lastMessage: `사장님..
-    오늘도 수고하셨습니다.`,
-    time: "1hour ago",
-  },
-  {
-    name: "이 미화",
-    lastMessage: `우성아..
-    오늘도 고생했어`,
-    time: "12min ago",
-    unread: true,
-  },
-];
+import React, { useEffect, useState } from "react";
+import { ChatType } from "../Chat";
 
-import React, { useState } from "react";
+// ChatDisplay가 받을 Props 타입 정의
+type ChatDisplayProps = {
+  displayChats: ChatType[]; // ChatType의 배열
+};
 
-const ChatDisplay = () => {
-  const [displayChats, setDisplayChats] = useState(initChats);
+const ChatDisplay = ({ displayChats }: ChatDisplayProps) => {
+  const chatTailRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    chatTailRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [displayChats]);
 
   return (
     <div className="middle flex flex-col gap-4  overflow-y-auto scroll">
@@ -42,7 +24,7 @@ const ChatDisplay = () => {
         <div className="message" key={index}>
           <div
             className={`messageHeader flex flex-row items-center gap-2 ${
-              chat.own ? "justify-end" : ""
+              chat.own ? "justify-end mr-4" : ""
             }`}
           >
             {!chat.own ? (
@@ -55,18 +37,30 @@ const ChatDisplay = () => {
               ""
             )}
 
-            <p
-              className={`chat-body whitespace-pre-line p-4 text-sm font-extralight text-gray-100 rounded-md 
+            <div className="flex flex-col max-w-[70%]  gap-2 ">
+              {chat.image ? (
+                <img
+                  src={chat.image}
+                  alt=""
+                  className="max-w-[100%] rounded-md"
+                />
+              ) : (
+                ""
+              )}
+              <p
+                className={`chat-body whitespace-pre-line p-4 text-sm font-extralight text-gray-100 rounded-md 
+              bg-[color:var(--chat-bubble-background-color)]
             ${chat.own ? "ownMessage" : "notOwn"}
             ${chat.unread ? "unreadMessage" : ""}
             `}
-            >
-              {chat.lastMessage}
-            </p>
+              >
+                {chat.lastMessage}
+              </p>
+            </div>
           </div>
           <div
             className={`messageInfo flex flex-row items-center gap-2 ${
-              chat.own ? "justify-end" : ""
+              chat.own ? "justify-end mr-4" : "ml-12"
             }`}
           >
             <span className="text-sm font-extralight text-gray-400">
@@ -75,6 +69,7 @@ const ChatDisplay = () => {
           </div>
         </div>
       ))}
+      <div ref={chatTailRef}></div>
     </div>
   );
 };

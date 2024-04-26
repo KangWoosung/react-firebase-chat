@@ -3,8 +3,14 @@
     --backgrounc-color: rgba(35, 43, 68, 0.75);
     --border-color: rgba(255, 255, 255, 0.125);
     --input-background-color: rgba(31, 41, 61);
+    --input-background-disabled-color: rgba(31, 41, 61);
     --chat-bubble-background-color: rgba(31, 41, 61, 0.5);
+    --chat-bubble-deep-background-color: rgba(31, 41, 61, 0.9);
     --undone-background-color: rgba(15, 72, 170, 0.7);
+    --positive-background-color: rgba(21, 73, 215, 0.7);
+    --positive-deep-background-color: rgba(21, 73, 215, 1);
+    --warning-background-color: rgba(82, 19, 19, 0.7);
+    --warning-deep-background-color: rgba(82, 19, 19, 1);
     --font-size: 16px;
   }
 
@@ -18,7 +24,18 @@
     width: 90%;
     height: 90%;
     background-color: var(--backgrounc-color);
-    backdrop-filter: blur(10px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
     border-radius: 10px;
     border: 1px solid var(--border-color);
 }
+
+/* CSS animation   */
+@keyframes rollout {
+    0% { transform: translateY(-50px); }
+    100% { transform: none; }
+}
+
+.roll-out {
+    animation: rollout 0.4s;
+}
+  

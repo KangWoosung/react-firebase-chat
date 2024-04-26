@@ -37,27 +37,28 @@ userChats > chats
 
 
 */
-
-import { createContext } from "react";
-import Chat from "./components/chat/Chat";
-import Detail from "./components/detail/Detail";
-import List from "./components/list/List";
+"use client";
+import { useState } from "react";
+import AppFrame from "./AppFrame";
 import "./index.css";
 import ChatUserContextComponent from "./contexts/userContext";
+// import Notification from "./util/notification";
+import Notification from "./util/Notification";
 
 export default function Home() {
   return (
-    <div className="wrapper flex flex-col justify-center items-center h-dvh ">
-      <h1 className="flex">React Firebase Chat</h1>
+    <div className="wrapper flex flex-col justify-center items-center h-svh ">
+      <h1 className="flex bg-white text-slate-800 py-4 px-10 my-2">
+        React Firebase Chat
+      </h1>
       <div className="container flex ">
         <main className="flex flex-row justify-center border-solid rounded-lg w-full text-white">
           <ChatUserContextComponent>
-            <List />
-            <Chat />
-            <Detail />
+            <AppFrame />
           </ChatUserContextComponent>
         </main>
       </div>
+      <Notification />
     </div>
   );
 }

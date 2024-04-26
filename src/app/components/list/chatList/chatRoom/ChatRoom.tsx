@@ -19,7 +19,7 @@ const ChatRoom = ({ name, lastMessage }: ChatRoomProps) => {
     <div className="chatItems border-b border-gray-500 py-4">
       <div
         className={`chatItem flex flex-row items-center gap-5 p-2
-        ${unread ? "unreadChat" : ""}
+        ${unread ? "unreadChat bg-[color:var(--undone-background-color)]" : ""}
         `}
         onClick={(e) => setUserName(name)}
       >

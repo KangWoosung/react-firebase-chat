@@ -1,0 +1,7 @@
+
+.error input[type="text"] {
+  border-color: red;
+}
+.error input[type="password"] {
+  border-color: red;
+}

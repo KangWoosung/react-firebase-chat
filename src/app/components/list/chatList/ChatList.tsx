@@ -10,6 +10,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./chatList.css";
 import ChatSearch from "./chatSearch/ChatSearch";
 import ChatRoom from "./chatRoom/ChatRoom";
+import AddUser from "../../addUser/AddUser";
 
 const usersInit = [
   {
@@ -56,6 +57,7 @@ const ChatList = () => {
   return (
     <div className="chatList mt-10 h-full">
       <ChatSearch
+        searchStr={searchStr}
         setSearchStr={setSearchStr}
         addMode={addMode}
         handleSearchAdd={handleSearchAdd}
@@ -77,6 +79,7 @@ const ChatList = () => {
           );
         })}
       </div>
+      {addMode && <AddUser />}
     </div>
   );
 };

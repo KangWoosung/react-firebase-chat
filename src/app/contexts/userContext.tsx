@@ -11,39 +11,80 @@ unread 도 필요하고, chatRoom 에 대해 필요한 상태 값이 많아졌�
 
 오늘은 너무 오랫동안 무리했으므로, 더이상 손 대지 않는 게 좋겠다. 
 
+2024-04-26 04:31:18
+users [icon: user] {
+    id string pk
+    userName string
+    email string
+    avatar string
+    blocked string[]
+}
+
+chats [icon: chat] {
+    id string pk
+    createdAt date
+    messages object[]
+}
+userChats.chats: {
+  chatId: string,
+  receiverId: string,
+  lastMessage: string,
+  updatedAt: date,
+  isSeen: boolean
+}
+chats.message: {
+  chatId: string,
+  senderId: string,
+  text: string,
+  image: string,
+  createdAt: date
+}
+
+userChats [icon: chat] {
+    id string pk
+    chats objext[]
+}
+
+users.id - userChats.id
+userChats > chats
+
+
 */
 "use client";
-import { Dispatch, SetStateAction, createContext, useState } from "react";
+import { createContext, useState } from "react";
+import { ChatUserContextType } from "../types/chatUserContextType";
+import { UserType } from "../types/userType";
 
 type ChatUserContextComponentProps = {
   children: React.ReactNode;
 };
 // 타입 정의
-type ChatUserContextType = {
-  userName: string | undefined;
-  setUserName: Dispatch<SetStateAction<string | undefined>>;
-  unread?: boolean;
-};
 
 const initValue = {
-  userName: undefined,
-  setUserName: () => {},
+  user: undefined,
+  loggedIn: false,
+  setUser: () => {},
 };
 
-export const ChatUserContext = createContext<ChatUserContextType>(initValue);
+export const ChatUserContext = createContext<ChatUserContextType | undefined>(
+  initValue
+);
 
 export default function ChatUserContextComponent({
   children,
 }: ChatUserContextComponentProps) {
-  const [userName, setUserName] = useState<string | undefined>("Jane Doe");
+  const [user, setUser] = useState<UserType>();
 
-  if (!userName)
-    throw new Error(
-      "You probably forgot to put <ChatUserContextComponent> around your component tree"
-    );
+  // initValue.setUser = setUser;
+  const [userContext, setUserContext] = useState<
+    ChatUserContextType | undefined
+  >(initValue);
+
+  if (!userContext)
+    throw new Error("userContext state is empty, please check it out.");
 
   return (
-    <ChatUserContext.Provider value={{ userName, setUserName }}>
+    <ChatUserContext.Provider value={userContext}>
       {children}
     </ChatUserContext.Provider>
   );

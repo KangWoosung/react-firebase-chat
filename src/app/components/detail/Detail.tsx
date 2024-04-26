@@ -3,11 +3,23 @@
 
 */
 
-import React from "react";
+"use client";
+import React, { useContext } from "react";
 import "./detail.css";
+import DetailHeader from "./detailHeader/DetailHeader";
+import DetailOptions from "./detailOptions/DetailOptions";
+import { ChatUserContext } from "@/app/contexts/userContext";
+import DetailFooter from "./detailFooter/DetailFooter";
 
 const Detail = () => {
-  return <div className="flex flex-1">Detail</div>;
+  const { userName, setUserName } = useContext(ChatUserContext);
+  return (
+    <div className="detail flex flex-col w-1/4 p-5">
+      <DetailHeader userName={userName} />
+      <DetailOptions />
+      <DetailFooter />
+    </div>
+  );
 };
 
 export default Detail;
