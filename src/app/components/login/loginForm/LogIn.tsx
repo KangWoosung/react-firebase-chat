@@ -16,9 +16,13 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
-import { ChatUserContext } from "@/app/contexts/userContext";
 import { User as FirebaseUser } from "firebase/auth";
 import { UserType } from "@/app/types/userType";
+import {
+  REDUCER_ACTION_TYPE,
+  useCurrentUserId,
+  useFetchUserInfo,
+} from "@/app/contexts/UserContext";
 
 const LogInForm = () => {
   const {
@@ -27,20 +31,15 @@ const LogInForm = () => {
     formState: { errors },
   } = useForm<LogInSchemaType>({ resolver: zodResolver(logInSchema) });
 
-  const { user, setUser } = useContext(ChatUserContext);
   const [loading, setLoading] = useState(false);
-
-  const convertFirebaseUserToUserType = (
-    firebaseUser: FirebaseUser
-  ): UserType => {
-    return {
-      id: firebaseUser.uid,
-      email: firebaseUser.email ?? "",
-      userName: firebaseUser.displayName ?? "Unknown User",
-      avatar: firebaseUser.photoURL ?? "",
-      blocked: [],
-    };
-  };
+  const {
+    fetchUserInfo,
+    userDispatch,
+    state: fetchState,
+    error: fetchError,
+  } = useFetchUserInfo();
+  console.log(fetchState);
+  console.log(fetchError);
 
   const onSubmit = async (data: LogInSchemaType) => {
     setLoading(true);
@@ -53,7 +52,17 @@ const LogInForm = () => {
       // Firebase User를 UserType으로 변환
       const user = convertFirebaseUserToUserType(res.user);
       console.log(user);
-      setUser(user);
+      // useCurrentUserId 대신 userDispatch를 직접 사용
+      userDispatch({
+        type: REDUCER_ACTION_TYPE.SET_USER_ID,
+        payload: user.id,
+      });
+      userDispatch({
+        type: REDUCER_ACTION_TYPE.SET_USER_DATA,
+        payload: user,
+      });
+      console.log(fetchState);
+      console.log(fetchError);
       toast.success("Log in success", {
         position: "bottom-right",
         autoClose: 3000,
@@ -157,3 +166,15 @@ const LogInForm = () => {
 };
 
 export default LogInForm;
+
+const convertFirebaseUserToUserType = (
+  firebaseUser: FirebaseUser
+): UserType => {
+  return {
+    id: firebaseUser.uid,
+    email: firebaseUser.email ?? "",
+    userName: firebaseUser.displayName ?? "Unknown User",
+    avatar: firebaseUser.photoURL ?? "",
+    blocked: [],
+  };
+};

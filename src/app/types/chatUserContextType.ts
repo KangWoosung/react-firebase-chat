@@ -9,4 +9,6 @@ export type ChatUserContextType = {
   chats?: ChatsType | undefined;
   messages?: MessageType | undefined;
   loggedIn: boolean;
+  userContext: UserType | undefined;
+  setUserContext: Dispatch<SetStateAction<UserType | undefined>>;
 };

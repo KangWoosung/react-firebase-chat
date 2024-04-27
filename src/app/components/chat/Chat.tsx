@@ -8,6 +8,7 @@ import "./chat.css";
 import ChatInput from "./chatInput/ChatInput";
 import ChatDisplay from "./chatDisplay/ChatDisplay";
 import ChatHeader from "./chatHeader/ChatHeader";
+import { ChatType } from "@/app/types/chatsType";
 
 const initChats: ChatType[] = [
   {
@@ -38,15 +39,6 @@ const initChats: ChatType[] = [
     unread: true,
   },
 ];
-
-export type ChatType = {
-  name: string;
-  lastMessage: string;
-  own?: boolean;
-  time: string;
-  image?: string;
-  unread?: boolean;
-};
 
 type ChatProps = {
   name: string;

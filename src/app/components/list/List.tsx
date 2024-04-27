@@ -8,7 +8,7 @@ import React, { useContext } from "react";
 import "./list.css";
 import UserInfo from "./userInfo/UserInfo";
 import ChatList from "./chatList/ChatList";
-import { ChatUserContext } from "@/app/contexts/userContext";
+import { ChatUserContext } from "@/app/contexts/userContext_bck";
 
 const List = () => {
   return (

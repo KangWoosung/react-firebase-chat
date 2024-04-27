@@ -11,13 +11,13 @@ import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
 import List from "./components/list/List";
 import LogIn from "./components/login/LogIn";
-import { ChatUserContext } from "./contexts/userContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase";
+import { UserType } from "./types/userType";
 
 const AppFrame = () => {
   const [loggedIn, setLoggedIn] = useState(false);
-  const { user } = useContext(ChatUserContext);
+  const [loggedInUser, setLoggedInUser] = useState<UserType>();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {

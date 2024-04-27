@@ -4,13 +4,12 @@
 
 */
 
-import { ChatUserContext } from "@/app/contexts/userContext";
 import React, { useContext } from "react";
 import { BsTelephoneForward } from "react-icons/bs";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 
 const ChatHeader = () => {
-  const { userName, setUserName } = useContext(ChatUserContext);
+  const userName = "John Doe";
 
   return (
     <div className="top w-4/4">

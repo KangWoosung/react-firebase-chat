@@ -4,7 +4,6 @@
 
 */
 
-import { ChatUserContext } from "@/app/contexts/userContext";
 import React, { useContext } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";

@@ -3,7 +3,6 @@
 
 */
 "use client";
-import { ChatUserContext } from "@/app/contexts/userContext";
 import React, { useContext } from "react";
 
 type ChatRoomProps = {
@@ -13,7 +12,7 @@ type ChatRoomProps = {
 };
 
 const ChatRoom = ({ name, lastMessage }: ChatRoomProps) => {
-  const { userName, setUserName, unread } = useContext(ChatUserContext);
+  const unread = false;
 
   return (
     <div className="chatItems border-b border-gray-500 py-4">
@@ -21,7 +20,7 @@ const ChatRoom = ({ name, lastMessage }: ChatRoomProps) => {
         className={`chatItem flex flex-row items-center gap-5 p-2
         ${unread ? "unreadChat bg-[color:var(--undone-background-color)]" : ""}
         `}
-        onClick={(e) => setUserName(name)}
+        // onClick={(e) => setUserName(name)}
       >
         <img
           src="/avatar.png"

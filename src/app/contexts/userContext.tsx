@@ -1,91 +1,190 @@
-/*  2024-04-24 00:00:20
+/*  2024-04-27 22:14:22
 
-Context 의 분리는 매우 아름답지만,
-문제는, 여기 분리된 컴포넌트에서 ChatUser 관련 상태 값이 입출력 되어야 한다는 것인데...
-이건 또다른 어려운 문제이다. 
-Firebase 와 통신을 시작한 뒤에 다시 생각해 보기로 한다. 
+Todos:
+1. initState
+2. Reducer.Action_Types
+3. Reducer function
+4. useReducer Custom hook function
+5. initContextState
+6. create createContext
+7. Context.Provider Component
+8. Context.Consumer functions
 
-2024-04-24 07:19:43
-데자뷰가 오네..정신이 몽롱해진 듯...
-unread 도 필요하고, chatRoom 에 대해 필요한 상태 값이 많아졌으므로, 상태를 객체로 하던지, useReducer 가 나오던지 변화를 줘야 할 시점에 왔다.
-
-오늘은 너무 오랫동안 무리했으므로, 더이상 손 대지 않는 게 좋겠다. 
-
-2024-04-26 04:31:18
-users [icon: user] {
-    id string pk
-    userName string
-    email string
-    avatar string
-    blocked string[]
-}
-
-chats [icon: chat] {
-    id string pk
-    createdAt date
-    messages object[]
-}
-userChats.chats: {
-  chatId: string,
-  receiverId: string,
-  lastMessage: string,
-  updatedAt: date,
-  isSeen: boolean
-}
-chats.message: {
-  chatId: string,
-  senderId: string,
-  text: string,
-  image: string,
-  createdAt: date
-}
-
-userChats [icon: chat] {
-    id string pk
-    chats objext[]
-}
-
-users.id - userChats.id
-userChats > chats
-
+2024-04-28 01:37:21
+Job finished!! 🎉
 
 */
-"use client";
-import { createContext, useState } from "react";
-import { ChatUserContextType } from "../types/chatUserContextType";
-import { UserType } from "../types/userType";
+import {
+  ReactElement,
+  createContext,
+  useCallback,
+  useContext,
+  useReducer,
+} from "react";
 
-type ChatUserContextComponentProps = {
-  children: React.ReactNode;
+import { BlockedType } from "../types/blockedType";
+import { ChatType } from "../types/chatsType";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/app/lib/firebase";
+
+// 1. initState
+type StateType = {
+  currentUserId: string | null | undefined;
+  currentUser?: any;
+  isLoading: boolean;
+  isError?: boolean;
+  error?: any;
+  fetchUserInfo: (uid: string) => void;
 };
-// 타입 정의
-
-const initValue = {
-  user: undefined,
-  loggedIn: false,
-  setUser: () => {},
+const initState: StateType = {
+  currentUserId: undefined,
+  isLoading: false,
+  isError: false,
+  error: null,
+  fetchUserInfo: (uid: string) => void 0,
 };
 
-export const ChatUserContext = createContext<ChatUserContextType | undefined>(
-  initValue
-);
-
-export default function ChatUserContextComponent({
-  children,
-}: ChatUserContextComponentProps) {
-  const [user, setUser] = useState<UserType>();
-
-  // initValue.setUser = setUser;
-  const [userContext, setUserContext] = useState<
-    ChatUserContextType | undefined
-  >(initValue);
-
-  if (!userContext)
-    throw new Error("userContext state is empty, please check it out.");
-
-  return (
-    <ChatUserContext.Provider value={userContext}>
-      {children}
-    </ChatUserContext.Provider>
-  );
+// 2. Reducer.Action_Types
+export const enum REDUCER_ACTION_TYPE {
+  SET_USER_ID,
+  SET_USER_DATA,
+  SET_ERROR,
+  ISLOADING,
 }
+// type ReducerAction = {
+//   type: REDUCER_ACTION_TYPE;
+//   payload?: any;
+// };
+
+type ReducerAction =
+  | { type: REDUCER_ACTION_TYPE.SET_USER_ID; payload: any }
+  | { type: REDUCER_ACTION_TYPE.SET_USER_DATA; payload: any }
+  | { type: REDUCER_ACTION_TYPE.ISLOADING; payload: boolean }
+  | { type: REDUCER_ACTION_TYPE.SET_ERROR; payload: string | Error };
+
+// 3. Reducer.function
+const reducer = (state: StateType, action: ReducerAction): StateType => {
+  switch (action.type) {
+    case REDUCER_ACTION_TYPE.SET_USER_ID:
+      return { ...state, currentUserId: action.payload };
+    case REDUCER_ACTION_TYPE.SET_USER_DATA:
+      return { ...state, currentUser: action.payload };
+    case REDUCER_ACTION_TYPE.ISLOADING:
+      return { ...state, isLoading: !!action.payload };
+    case REDUCER_ACTION_TYPE.SET_ERROR:
+      return {
+        ...state,
+        isError: true,
+        error: action.payload,
+        isLoading: false,
+      };
+    default:
+      return state;
+  }
+};
+
+// 4. useReducer Custom hook function
+const useUserContext = () => {
+  const [state, dispatch] = useReducer(reducer, initState);
+  console.log(`useUserContext: ${state}`);
+
+  const fetchUserInfo = useCallback(async (uid: string) => {
+    dispatch({ type: REDUCER_ACTION_TYPE.ISLOADING, payload: true });
+
+    if (!uid)
+      return dispatch({
+        type: REDUCER_ACTION_TYPE.SET_ERROR,
+        payload: "uid is missing",
+      });
+
+    try {
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        dispatch({
+          type: REDUCER_ACTION_TYPE.SET_USER_ID,
+          payload: docSnap.data(),
+        });
+        dispatch({
+          type: REDUCER_ACTION_TYPE.SET_USER_DATA,
+          payload: docSnap.data(),
+        });
+      } else {
+        dispatch({
+          type: REDUCER_ACTION_TYPE.SET_ERROR,
+          payload: "User document does not exist",
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      dispatch({
+        type: REDUCER_ACTION_TYPE.SET_ERROR,
+        payload: e instanceof Error ? e : "Unknown Error",
+      });
+    } finally {
+      dispatch({ type: REDUCER_ACTION_TYPE.ISLOADING, payload: false });
+    }
+  }, []);
+
+  return { state, dispatch, fetchUserInfo };
+};
+
+// 5. initContextState
+type UseUserContextType = {
+  state: StateType;
+  userDispatch: React.Dispatch<ReducerAction>;
+  error: string | Error | null;
+  fetchUserInfo: (uid: string) => Promise<void>;
+};
+const initContextState: UseUserContextType = {
+  state: initState,
+  userDispatch: () => {},
+  error: null,
+  fetchUserInfo: async (uid: string) => {},
+};
+
+// 6. create createContext
+const UserContext = createContext<UseUserContextType>(initContextState);
+
+// 7. Context.Provider Component
+export const UserContextProvider = ({
+  children,
+}: {
+  children: ReactElement;
+}) => {
+  const { state, dispatch: userDispatch, fetchUserInfo } = useUserContext();
+  return (
+    <UserContext.Provider
+      value={{
+        state,
+        userDispatch,
+        error: state.isError ? state.error : null,
+        fetchUserInfo,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+// 8. useContext Custom hook functions
+type UseFetchUserInfoType = {
+  fetchUserInfo: (uid: string) => Promise<void>;
+  state: StateType;
+  userDispatch: React.Dispatch<ReducerAction>;
+  error: string | Error | null;
+};
+export const useFetchUserInfo = (): UseFetchUserInfoType => {
+  const { state, userDispatch, error, fetchUserInfo } = useContext(UserContext);
+  console.log(state);
+  return { state, userDispatch, error, fetchUserInfo };
+};
+
+export const useCurrentUserId = (userId: string) => {
+  const { userDispatch } = useContext(UserContext);
+  console.log(userId);
+  userDispatch({
+    type: REDUCER_ACTION_TYPE.SET_USER_ID,
+    payload: userId,
+  });
+};

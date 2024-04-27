@@ -41,9 +41,9 @@ userChats > chats
 import { useState } from "react";
 import AppFrame from "./AppFrame";
 import "./index.css";
-import ChatUserContextComponent from "./contexts/userContext";
 // import Notification from "./util/notification";
 import Notification from "./util/Notification";
+import { UserContextProvider } from "./contexts/UserContext";
 
 export default function Home() {
   return (
@@ -53,9 +53,9 @@ export default function Home() {
       </h1>
       <div className="container flex ">
         <main className="flex flex-row justify-center border-solid rounded-lg w-full text-white">
-          <ChatUserContextComponent>
+          <UserContextProvider>
             <AppFrame />
-          </ChatUserContextComponent>
+          </UserContextProvider>
         </main>
       </div>
       <Notification />
