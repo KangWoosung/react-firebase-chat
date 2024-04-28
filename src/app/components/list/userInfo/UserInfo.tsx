@@ -8,35 +8,27 @@ import "./userInfo.css";
 import { CgAddR } from "react-icons/cg";
 import Image from "next/image";
 import { MdOutlineVideoCameraBack } from "react-icons/md";
-import { useFetchUserInfo } from "@/app/contexts/UserContext";
+import { UserContext, useUserStore } from "@/app/contexts/UserContext";
+import { UseUserStoreType } from "@/app/types/userType";
+import { useGunymedeUserFetch } from "@/app/contexts/UserContextV2";
 
 const UserInfo = () => {
-  const { state, userDispatch, error, fetchUserInfo } = useFetchUserInfo();
-  let userName;
+  // zuStand version call
+  // const { currentUser } = useUserStore() as UseUserStoreType;
+  // gunymede version call
+  const { currentUser, isLoading, isError, error } = useGunymedeUserFetch();
 
-  useEffect(() => {
-    if (!state.currentUserId) return;
-
-    const fetchActioner = async () => {
-      try {
-        await fetchUserInfo(state.currentUserId as string);
-        userName = state.currentUser.userName;
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-    fetchActioner();
-  }, [state]);
+  console.log(currentUser);
 
   return (
     <div className="userInfo flex justify-between items-center">
       <div className="user flex flex-row items-center gap-5">
         <img
-          src="/avatar.png"
+          src={currentUser?.avatar || "/avatar.png"}
           alt=""
           className="w-10 h-10 rounded-full object-cover"
         />
-        <h2>{userName ? userName : ""}</h2>
+        <h2>{currentUser?.userName ? currentUser.userName : ""}</h2>
       </div>
       <div className="icons flex gap-2">
         <MdOutlineVideoCameraBack className="w-5 h-5" />

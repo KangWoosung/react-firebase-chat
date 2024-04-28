@@ -47,22 +47,12 @@ const LogInForm = () => {
 
     const { email, password } = data;
     try {
+      // 이 부분이 가장 혼란스러웠던 것 같다.
+      // signIn 처리후, res 리턴 객체를 저장하거나 몰고 다녀야 하는 것으로 생각했는데,
+      // user 객체는, onAuthStateChanged 펑션에서 자동으로 확보되는 것이었다.
+      // 로그인 액션 처리는 이 한줄이 전부다...
       const res = await signInWithEmailAndPassword(auth, email, password);
-      console.log(res.user);
-      // Firebase User를 UserType으로 변환
-      const user = convertFirebaseUserToUserType(res.user);
-      console.log(user);
-      // useCurrentUserId 대신 userDispatch를 직접 사용
-      userDispatch({
-        type: REDUCER_ACTION_TYPE.SET_USER_ID,
-        payload: user.id,
-      });
-      userDispatch({
-        type: REDUCER_ACTION_TYPE.SET_USER_DATA,
-        payload: user,
-      });
-      console.log(fetchState);
-      console.log(fetchError);
+
       toast.success("Log in success", {
         position: "bottom-right",
         autoClose: 3000,
@@ -167,14 +157,20 @@ const LogInForm = () => {
 
 export default LogInForm;
 
-const convertFirebaseUserToUserType = (
-  firebaseUser: FirebaseUser
-): UserType => {
-  return {
-    id: firebaseUser.uid,
-    email: firebaseUser.email ?? "",
-    userName: firebaseUser.displayName ?? "Unknown User",
-    avatar: firebaseUser.photoURL ?? "",
-    blocked: [],
-  };
-};
+// type FirebaseUserType = FirebaseUser & {
+//   uid: string;
+//   userName: string;
+//   avatar: string;
+// };
+
+// const convertFirebaseUserToUserType = (
+//   firebaseUser: FirebaseUserType
+// ): UserType => {
+//   return {
+//     uid: firebaseUser.uid,
+//     email: firebaseUser.email ?? "",
+//     userName: firebaseUser.userName ?? "Unknown User",
+//     avatar: firebaseUser.avatar ?? "",
+//     blocked: [],
+//   };
+// };

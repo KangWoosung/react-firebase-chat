@@ -26,6 +26,7 @@ import { BlockedType } from "../types/blockedType";
 import { ChatType } from "../types/chatsType";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebase";
+import { create } from "zustand";
 
 // 1. initState
 type StateType = {
@@ -144,7 +145,7 @@ const initContextState: UseUserContextType = {
 };
 
 // 6. create createContext
-const UserContext = createContext<UseUserContextType>(initContextState);
+export const UserContext = createContext<UseUserContextType>(initContextState);
 
 // 7. Context.Provider Component
 export const UserContextProvider = ({
@@ -188,3 +189,40 @@ export const useCurrentUserId = (userId: string) => {
     payload: userId,
   });
 };
+
+///////////////////////////////////////////////////////
+//// Zustand Code..  2024-04-28 21:22:22
+/* 
+  fetch 와 메인 상태관리를 전담하는, Zustand 의 핵심 커스텀 훅이다. 
+  이 훅의 기능이 내 게이트웨이 커스텀훅으로 편입되어야 한다. 
+  커스텀훅 내부에서 fetch 와 객체 구성이 완료되고 객체 데이터가 구성된다는 것이 중요함!! 
+  결과가 리턴되는 것이 아니다!! 구성된 객체가 전역에서 사용된다는 것이 중요하다.
+  이 커스텀훅이 AppFrame.tsx 의, 
+  onAuthStateChanged(auth, (user) => {}) 내부에서 호출되어야 한다. 
+  onAuthStateChanged(auth, (user) => {
+    // useUserStore() 훅이 호출되는 시점에 fetch.action 이 발생하는 것이 아니라,
+    const {currentUser, isLoading, fetchUserInfo} = useUserStore()
+    // fetchUserInfo(uid) 가 호출되는 시점에 fetch.action 이 실행된다!!!! 이 문제가 내 코드와의 가장 큰 차이점.. 
+  })
+*/
+export const useUserStore = create((set) => ({
+  currentUser: null,
+  isLoading: true,
+  zustandFetchUserInfo: async (uid: string | undefined | null) => {
+    if (!uid) return set({ currentUser: null, isLoading: false });
+
+    try {
+      // Firebase fetch...
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        set({ currentUser: docSnap.data(), isLoading: false });
+      } else {
+        set({ currentUser: null, isLoading: false });
+      }
+    } catch (err) {
+      console.error(err);
+      return set({ currentUser: null, isLoading: false });
+    }
+  },
+}));

@@ -12,11 +12,11 @@ const DetailFooter = () => {
   // const { user } = useContext(ChatUserContext);
 
   // 또는
-  auth.signOut();
+  // auth.signOut();
   const logOutHandle = async () => {
+    console.log("logged out");
     try {
-      await signOut(auth);
-      // setUser(undefined);
+      await auth.signOut();
     } catch (err) {
       console.log(err);
     }
