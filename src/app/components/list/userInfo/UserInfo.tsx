@@ -6,10 +6,7 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import "./userInfo.css";
 import { CgAddR } from "react-icons/cg";
-import Image from "next/image";
 import { MdOutlineVideoCameraBack } from "react-icons/md";
-import { UserContext, useUserStore } from "@/app/contexts/UserContext";
-import { UseUserStoreType } from "@/app/types/userType";
 import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
 
 const UserInfo = () => {
