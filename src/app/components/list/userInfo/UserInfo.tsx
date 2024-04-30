@@ -3,7 +3,6 @@
 
 */
 "use client";
-import React, { useCallback, useContext, useEffect } from "react";
 import "./userInfo.css";
 import { CgAddR } from "react-icons/cg";
 import { MdOutlineVideoCameraBack } from "react-icons/md";

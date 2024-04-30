@@ -4,12 +4,7 @@
 
 */
 
-import {
-  useGanymedeChatContext,
-  useGanymedeChatContextHook,
-} from "@/app/contexts/ChatContext";
 import { UserType } from "@/app/types/userType";
-import React, { useContext, useEffect, useState } from "react";
 import { BsTelephoneForward } from "react-icons/bs";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 

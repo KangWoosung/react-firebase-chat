@@ -4,7 +4,6 @@
 
 */
 "use client";
-import React, { useContext } from "react";
 import "./list.css";
 import UserInfo from "./userInfo/UserInfo";
 import ChatList from "./chatList/ChatList";

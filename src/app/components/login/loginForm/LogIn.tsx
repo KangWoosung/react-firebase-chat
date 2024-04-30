@@ -11,13 +11,11 @@
 import { InputGroup } from "@/app/util/InputGroup";
 import { LogInSchemaType, logInSchema } from "@/app/zodSchemas/logInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
-import { User as FirebaseUser } from "firebase/auth";
-import { UserType } from "@/app/types/userType";
 
 const LogInForm = () => {
   const {

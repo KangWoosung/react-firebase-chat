@@ -24,14 +24,13 @@ onSnapshot(
 */
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./chatList.css";
 import ChatSearch from "./chatSearch/ChatSearch";
 import ChatRoom from "./chatRoom/ChatRoom";
 import AddUser from "../../addUser/AddUser";
-import { UserType } from "@/app/types/userType";
 import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
-import { DocumentData, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import {
   ChatType,
@@ -39,33 +38,6 @@ import {
   UserChatsType,
 } from "@/app/types/chatTypes";
 import { useGanymedeChatContextHook } from "@/app/contexts/ChatContext";
-
-// const usersInit = [
-//   {
-//     name: "Jane Doe",
-//     lastMessage: "I miss you",
-//   },
-//   {
-//     name: "John Doe",
-//     lastMessage: "what the..",
-//   },
-//   {
-//     name: "전 혜진",
-//     lastMessage: "사장님..",
-//   },
-//   {
-//     name: "이 미화",
-//     lastMessage: "우성아..",
-//     unread: true,
-//   },
-// ];
-// type UsersType = {
-//   name: string;
-//   lastMessage: string;
-//   unread?: boolean;
-// };
-
-const chatsInit: ChatType[] = [];
 
 const ChatList = () => {
   // const [usersList, setUsersList] = useState<ChatType[]>(chatsInit);

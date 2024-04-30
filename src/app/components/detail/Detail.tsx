@@ -4,7 +4,6 @@
 */
 
 "use client";
-import React, { useContext } from "react";
 import "./detail.css";
 import DetailHeader from "./detailHeader/DetailHeader";
 import DetailOptions from "./detailOptions/DetailOptions";

@@ -9,9 +9,7 @@ import ChatInput from "./chatInput/ChatInput";
 import ChatDisplay from "./chatDisplay/ChatDisplay";
 import ChatHeader from "./chatHeader/ChatHeader";
 import { ChatType } from "@/app/types/chatTypes";
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
 import { useGanymedeChatContextHook } from "@/app/contexts/ChatContext";
-import { UserType } from "@/app/types/userType";
 
 const initChats: ChatType[] = [];
 
