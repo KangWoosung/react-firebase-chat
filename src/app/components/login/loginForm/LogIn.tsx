@@ -18,11 +18,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { User as FirebaseUser } from "firebase/auth";
 import { UserType } from "@/app/types/userType";
-import {
-  REDUCER_ACTION_TYPE,
-  useCurrentUserId,
-  useFetchUserInfo,
-} from "@/app/contexts/UserContext";
 
 const LogInForm = () => {
   const {
@@ -32,14 +27,6 @@ const LogInForm = () => {
   } = useForm<LogInSchemaType>({ resolver: zodResolver(logInSchema) });
 
   const [loading, setLoading] = useState(false);
-  const {
-    fetchUserInfo,
-    userDispatch,
-    state: fetchState,
-    error: fetchError,
-  } = useFetchUserInfo();
-  console.log(fetchState);
-  console.log(fetchError);
 
   const onSubmit = async (data: LogInSchemaType) => {
     setLoading(true);

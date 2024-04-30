@@ -5,7 +5,7 @@
 "use client";
 import { ReactNode, useEffect, useId, useState } from "react";
 import { CiWarning } from "react-icons/ci";
-import "./InputGroup.css";
+import "./inputGroup.css";
 
 type InputGroupProps = {
   errorMessage?: string;
