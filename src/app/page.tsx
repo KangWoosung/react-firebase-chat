@@ -43,7 +43,6 @@ import AppFrame from "./AppFrame";
 import "./index.css";
 // import Notification from "./util/notification";
 import Notification from "./util/Notification";
-import { UserContextProvider } from "./contexts/UserContext";
 import { GanymedeUserProvider } from "./contexts/UserContextV2";
 import { GanymedeChatProvider } from "./contexts/ChatContext";
 
