@@ -1,10 +1,20 @@
 /*   2024-04-28 23:29:10
 
-이번 커스텀 유틸리티에 고유 네임을 부여한다: GunymedianContext 
+Todos:
+1. initState
+2. Reducer.Action_Types
+3. Reducer function
+4. useReducer Custom hook function
+5. initContextState
+6. create createContext
+7. Context.Provider Component
+8. Context.Consumer functions
+
+이번 커스텀 유틸리티에 고유 네임을 부여한다: GanymedeUserContext 
 
 ZuStand 코드의 펑션들과 객체구조를 참조하여 리빌드한다.
 
-ZuStand 의 커스텀 훅 구조:
+ZuStand 의 Context State Object 구조:
 {
   currentUser: null,
   isLoading: true,
@@ -27,11 +37,11 @@ ZuStand 의 커스텀 훅 구조:
   },
 }
 
-혼란을 최소화하기 위해, GunymedianContext 에서 변수, 속성 명을 동일하게 유지하고, 펑션 명만 바꾸자. 
+혼란을 최소화하기 위해, GanymedeUserContext 에서 변수, 속성 명을 동일하게 유지하고, 펑션 명만 바꾸자. 
 {
     currentUser: null,
     isLoading: true,
-    gunymedeFetch: async (uid: string | undefined | null) => {
+    ganymedeUserFetch: async (uid: string | undefined | null) => {
     },
 }
 
@@ -57,16 +67,16 @@ type StateType = {
   isLoading: boolean;
   isError: boolean;
   error: string | Error | null;
-  gunymedeUserFetch: (uid: string | undefined | null) => void;
-  gunymedeUserDispatch: React.Dispatch<ReducerAction>;
+  ganymedeUserFetch: (uid: string | undefined | null) => void;
+  ganymedeUserDispatch: React.Dispatch<ReducerAction>;
 };
 const initState = {
   currentUser: null,
   isLoading: false,
   isError: false,
   error: null,
-  gunymedeUserFetch: async (uid: string | undefined | null) => void 0,
-  gunymedeUserDispatch: (action: ReducerAction) => void 0,
+  ganymedeUserFetch: async (uid: string | undefined | null) => void 0,
+  ganymedeUserDispatch: (action: ReducerAction) => void 0,
 };
 
 // 2. Reducer.Action_Types
@@ -99,7 +109,7 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
 };
 
 // 4. useReducer Custom hook function
-const useGunymedeUserContext = (): StateType => {
+const useGanymedeUserContext = (): StateType => {
   const [state, dispatch] = useReducer(reducer, initState);
 
   return {
@@ -107,7 +117,7 @@ const useGunymedeUserContext = (): StateType => {
     isLoading: state.isLoading,
     isError: state.isError,
     error: state.error,
-    gunymedeUserFetch: async (uid: string | undefined | null) => {
+    ganymedeUserFetch: async (uid: string | undefined | null) => {
       if (!uid)
         return dispatch({ type: REDUCER_ACTION_TYPE.SET_USER, payload: null });
 
@@ -138,87 +148,87 @@ const useGunymedeUserContext = (): StateType => {
         dispatch({ type: REDUCER_ACTION_TYPE.SET_LOADING, payload: false });
       }
     },
-    gunymedeUserDispatch: dispatch,
+    ganymedeUserDispatch: dispatch,
   };
 };
 
 // 5. initContextState
-type UseGunymedeUserContextType = {
+type UseGanymedeUserContextType = {
   currentUser: UserType | null;
-  gunymedeUserDispatch?: React.Dispatch<ReducerAction>;
-  gunymedeUserFetch?: (uid: string | undefined | null) => void;
+  ganymedeUserDispatch?: React.Dispatch<ReducerAction>;
+  ganymedeUserFetch?: (uid: string | undefined | null) => void;
   error?: string | Error | null;
   isError?: boolean;
   isLoading: boolean;
 };
-export const initGunymedeUserContextState = {
+export const initGanymedeUserContextState = {
   currentUser: null,
-  gunymedeUserDispatch: (action: ReducerAction) => void 0,
-  gunymedeUserFetch: async (uid: string | undefined | null) => void 0,
+  ganymedeUserDispatch: (action: ReducerAction) => void 0,
+  ganymedeUserFetch: async (uid: string | undefined | null) => void 0,
   error: null,
   isError: false,
   isLoading: false,
 };
 
 // 6. create createContext
-export const GunymedeUserContext = createContext<UseGunymedeUserContextType>(
-  initGunymedeUserContextState
+export const GanymedeUserContext = createContext<UseGanymedeUserContextType>(
+  initGanymedeUserContextState
 );
 
 // 7. Context.Provider Component
-export const GunymedeUserProvider = ({
+export const GanymedeUserProvider = ({
   children,
 }: {
   children: ReactElement;
 }) => {
-  const { currentUser, isLoading, gunymedeUserFetch, gunymedeUserDispatch } =
-    useGunymedeUserContext();
-  //  gunymedeUserFetch, gunymedeUserDispatch
+  const { currentUser, isLoading, ganymedeUserFetch, ganymedeUserDispatch } =
+    useGanymedeUserContext();
+  //  ganymedeUserFetch, ganymedeUserDispatch
   // 검토해야 할 부분: 이 부분에서 상태 업데이트로 인해 무한 루프가 발생하는지 확인
   // `useEffect`가 필요하다면, 종속성 배열을 신중하게 설정하고, 무한 루프를 방지
   //   useEffect(() => {
   //     if (isLoading) {
-  //       gunymedeUserDispatch({
+  //       ganymedeUserDispatch({
   //         type: REDUCER_ACTION_TYPE.SET_LOADING,
   //         payload: false,
   //       });
   //     }
-  //   }, [isLoading, gunymedeUserDispatch]); // 종속성 배열을 최소화하여 무한 루프 방지
+  //   }, [isLoading, ganymedeUserDispatch]); // 종속성 배열을 최소화하여 무한 루프 방지
 
   return (
-    <GunymedeUserContext.Provider
+    <GanymedeUserContext.Provider
       value={{
         currentUser,
         isLoading,
-        gunymedeUserFetch,
-        gunymedeUserDispatch,
+        ganymedeUserFetch,
+        ganymedeUserDispatch,
       }}
     >
       {children}
-    </GunymedeUserContext.Provider>
+    </GanymedeUserContext.Provider>
   );
 };
 
 // 8. useContext Custom hook functions
 /* We've got the function.
     Just call : 
-    gunymedeUserFetch(user.uid)
+    ganymedeUserFetch(user.uid)
     then the userData will be there :
     currentUser
 */
-export const useGunymedeUserFetch = () => {
+export const useGanymedeUserFetch = () => {
   const {
     currentUser,
-    gunymedeUserFetch,
-    gunymedeUserDispatch,
+    ganymedeUserFetch,
+    ganymedeUserDispatch,
     isLoading,
     isError,
     error,
-  } = useContext(GunymedeUserContext);
+  } = useContext(GanymedeUserContext);
   return {
     currentUser,
-    gunymedeUserFetch,
-    gunymedeUserDispatch,
+    ganymedeUserFetch,
+    ganymedeUserDispatch,
     isLoading,
     isError,
     error,

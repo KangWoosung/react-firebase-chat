@@ -44,7 +44,8 @@ import "./index.css";
 // import Notification from "./util/notification";
 import Notification from "./util/Notification";
 import { UserContextProvider } from "./contexts/UserContext";
-import { GunymedeUserProvider } from "./contexts/UserContextV2";
+import { GanymedeUserProvider } from "./contexts/UserContextV2";
+import { GanymedeChatProvider } from "./contexts/ChatContext";
 
 export default function Home() {
   return (
@@ -54,9 +55,11 @@ export default function Home() {
       </h1>
       <div className="container flex ">
         <main className="flex flex-row justify-center border-solid rounded-lg w-full text-white">
-          <GunymedeUserProvider>
-            <AppFrame />
-          </GunymedeUserProvider>
+          <GanymedeUserProvider>
+            <GanymedeChatProvider>
+              <AppFrame />
+            </GanymedeChatProvider>
+          </GanymedeUserProvider>
         </main>
       </div>
       <Notification />

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { UserType } from "./userType";
-import { ChatsType } from "./chatsType";
+import { ChatsType } from "./chatTypes";
 import { MessageType } from "./messageType";
 
 export type ChatUserContextType = {

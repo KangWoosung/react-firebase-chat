@@ -6,22 +6,23 @@
 
 "use client";
 
+import { UserType } from "@/app/types/userType";
 import React from "react";
 
 type DetailHeaderProp = {
-  userName: string | undefined;
+  targetUser: UserType | null;
 };
 
-const DetailHeader = ({ userName }: DetailHeaderProp) => {
+const DetailHeader = ({ targetUser }: DetailHeaderProp) => {
   return (
     <div className="flex flex-row justify-start items-center gap-4">
       <img
-        src="/avatar.png"
-        alt={`${userName}` + "'s avatar"}
+        src={targetUser?.avatar || "/avatar.png"}
+        alt={`${targetUser?.userName}` + "'s avatar"}
         className="w-10 h-10 rounded-full object-cover"
       />
       <div>
-        <h2>{userName}</h2>
+        <h3>{targetUser?.userName}</h3>
         <p className="text-xs font-extralight text-gray-300">
           Lorem ipsum dolor sit amet consectetur adipisicing elit.{" "}
         </p>

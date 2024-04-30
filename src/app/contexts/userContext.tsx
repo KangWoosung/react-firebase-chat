@@ -23,7 +23,7 @@ import {
 } from "react";
 
 import { BlockedType } from "../types/blockedType";
-import { ChatType } from "../types/chatsType";
+import { ChatType } from "../types/chatTypes";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebase";
 import { create } from "zustand";

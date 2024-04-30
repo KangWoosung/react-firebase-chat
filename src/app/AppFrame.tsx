@@ -5,18 +5,18 @@
 */
 
 "use client";
-import React, { useContext, useEffect, useState } from "react";
-import { createContext } from "react";
+import React, { useEffect } from "react";
 import Chat from "./components/chat/Chat";
 import Detail from "./components/detail/Detail";
 import List from "./components/list/List";
 import LogIn from "./components/login/LogIn";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { auth } from "./lib/firebase";
-import { UseUserStoreType, UserType } from "./types/userType";
-import { useUserStore } from "./contexts/UserContext";
-import { useGunymedeUserFetch } from "./contexts/UserContextV2";
-import { GunymedeChatProvider } from "./contexts/ChatContext";
+import { useGanymedeUserFetch } from "./contexts/UserContextV2";
+import {
+  GanymedeChatProvider,
+  useGanymedeChatContextHook,
+} from "./contexts/ChatContext";
 
 const AppFrame = () => {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -25,18 +25,11 @@ const AppFrame = () => {
   // AppFrame 의 메인 스코프에서 호출해 주었다. 여기서 실행되는 코드는 전혀 없기 때문..
   // const { currentUser, isLoading, zustandFetchUserInfo } =
   //   useUserStore() as UseUserStoreType;
-  // gunymede version call
-  const {
-    currentUser,
-    gunymedeUserFetch,
-    gunymedeUserDispatch,
-    isLoading,
-    isError,
-    error,
-  } = useGunymedeUserFetch();
+  // Ganymede version call
+  const { currentUser, ganymedeUserFetch, isLoading, isError, error } =
+    useGanymedeUserFetch();
 
-  // const isLoading = false;
-  // const currentUser = { userName: "John Doe" };
+  const { chatId } = useGanymedeChatContextHook();
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user: FirebaseUser | null) => {
@@ -44,13 +37,14 @@ const AppFrame = () => {
       if (user?.uid) {
         // zuStand version call
         // zustandFetchUserInfo && zustandFetchUserInfo(user.uid);
-        // gunymede version call
-        gunymedeUserFetch && gunymedeUserFetch(user.uid);
+        // Ganymede version call
+        ganymedeUserFetch && ganymedeUserFetch(user.uid);
       } else {
+        // 이 코드가 로그아웃 처리-currentuser.reset() 역할을 맡는다.
         // zuStand version call -- resets current userInfo object
         // zustandFetchUserInfo && zustandFetchUserInfo(null);
-        console.error("User is not logged in or has no UID");
-        gunymedeUserFetch && gunymedeUserFetch(null);
+        // console.error("User is not logged in or has no UID");
+        ganymedeUserFetch && ganymedeUserFetch(null);
       }
     });
 
@@ -69,11 +63,11 @@ const AppFrame = () => {
   return (
     <>
       {currentUser ? (
-        <GunymedeChatProvider>
+        <>
           <List />
-          <Chat />
-          <Detail />
-        </GunymedeChatProvider>
+          {chatId && <Chat />}
+          {chatId && <Detail />}
+        </>
       ) : (
         <LogIn />
       )}

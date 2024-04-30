@@ -10,13 +10,13 @@ import Image from "next/image";
 import { MdOutlineVideoCameraBack } from "react-icons/md";
 import { UserContext, useUserStore } from "@/app/contexts/UserContext";
 import { UseUserStoreType } from "@/app/types/userType";
-import { useGunymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
 
 const UserInfo = () => {
   // zuStand version call
   // const { currentUser } = useUserStore() as UseUserStoreType;
-  // gunymede version call
-  const { currentUser, isLoading, isError, error } = useGunymedeUserFetch();
+  // ganymede version call
+  const { currentUser, isLoading, isError, error } = useGanymedeUserFetch();
 
   console.log(currentUser);
 

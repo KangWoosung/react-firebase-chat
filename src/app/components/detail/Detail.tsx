@@ -9,13 +9,19 @@ import "./detail.css";
 import DetailHeader from "./detailHeader/DetailHeader";
 import DetailOptions from "./detailOptions/DetailOptions";
 import DetailFooter from "./detailFooter/DetailFooter";
+import { useGanymedeChatContextHook } from "@/app/contexts/ChatContext";
 
 const Detail = () => {
-  const userName = "John Doe";
+  const {
+    chatId,
+    targetUser,
+    currentUser: currentChatUser,
+  } = useGanymedeChatContextHook();
+  // console.log(chatId, targetUser, currentChatUser);
 
   return (
     <div className="detail flex flex-col w-1/4 p-5">
-      <DetailHeader userName={userName} />
+      <DetailHeader targetUser={targetUser} />
       <DetailOptions />
       <DetailFooter />
     </div>
