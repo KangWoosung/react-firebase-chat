@@ -138,7 +138,7 @@ const useGanymedeUserContext = (): StateType => {
           });
           dispatch({
             type: REDUCER_ACTION_TYPE.SET_ERROR,
-            payload: "User document does not exist is Firebase.",
+            payload: "User document does not exist in Firebase.",
           });
         }
       } catch (err) {
@@ -183,17 +183,6 @@ export const GanymedeUserProvider = ({
 }) => {
   const { currentUser, isLoading, ganymedeUserFetch, ganymedeUserDispatch } =
     useGanymedeUserContext();
-  //  ganymedeUserFetch, ganymedeUserDispatch
-  // 검토해야 할 부분: 이 부분에서 상태 업데이트로 인해 무한 루프가 발생하는지 확인
-  // `useEffect`가 필요하다면, 종속성 배열을 신중하게 설정하고, 무한 루프를 방지
-  //   useEffect(() => {
-  //     if (isLoading) {
-  //       ganymedeUserDispatch({
-  //         type: REDUCER_ACTION_TYPE.SET_LOADING,
-  //         payload: false,
-  //       });
-  //     }
-  //   }, [isLoading, ganymedeUserDispatch]); // 종속성 배열을 최소화하여 무한 루프 방지
 
   return (
     <GanymedeUserContext.Provider
@@ -209,14 +198,16 @@ export const GanymedeUserProvider = ({
   );
 };
 
-// 8. useContext Custom hook functions
-/* We've got the function.
-    Just call : 
-    ganymedeUserFetch(user.uid)
-    then the userData will be there :
-    currentUser
+// 8. Context.Consumer functions
+/* 
+    // Usage :
+    // Just call this Context.Consumer function : 
+    const { currentUser, ganymedeUserFetch, isLoading, isError, error } = useGanymedeUserFetchHook();
+    // and call fetch function
+    ganymedeUserFetch(user.id);
+    // then the userData and fetch error states will be there : { currentUser, error, isError }
 */
-export const useGanymedeUserFetch = () => {
+export const useGanymedeUserFetchHook = () => {
   const {
     currentUser,
     ganymedeUserFetch,

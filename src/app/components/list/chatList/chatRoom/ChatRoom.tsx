@@ -3,7 +3,7 @@
 
 */
 "use client";
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "@/app/contexts/UserContextV2";
 import { db } from "@/app/lib/firebase";
 import {
   ChatType,
@@ -16,6 +16,7 @@ import React, { useContext } from "react";
 
 type ChatRoomProps = {
   changeChat: (chatId: string, user: UserType) => void;
+  checkTargetIsBlocked: (currentUser: UserType, targetUser: UserType) => void;
   chat: UserChatsType;
   chats: ChatsAndUsersType[];
   chatId: string;
@@ -25,43 +26,43 @@ type ChatRoomProps = {
 
 const ChatRoom = ({
   changeChat,
+  checkTargetIsBlocked,
   chat,
   chats,
   chatId,
   targetUser,
   lastMessage,
 }: ChatRoomProps) => {
-  const { currentUser } = useGanymedeUserFetch();
+  const { currentUser } = useGanymedeUserFetchHook();
 
-  const handleChangeChat = async (chatId: string, targetUser: UserType) => {
-    changeChat(chatId, targetUser);
-    console.log("chatId, targetUser", chatId, targetUser);
-  };
+  // const handleChangeChat = async (chatId: string, targetUser: UserType) => {
+  //   changeChat(chatId, targetUser);
+  //   console.log("chatId, targetUser", chatId, targetUser);
+  // };
 
   const handleSelectChat = async (chat: UserChatsType) => {
+    // console.log(currentUser?.id, targetUser.id);
     if (currentUser === null || !currentUser.id || !targetUser.id) return;
     const userChats = chats.map((item: ChatsAndUsersType) => {
       const { user, ...rest } = item;
       return rest;
     });
-    console.log("userChats", userChats);
 
     const chatIndex = userChats.findIndex(
       (item) => item.chatId === chat.chatId
     );
-    console.log("chatIndex", chatIndex);
 
     userChats[chatIndex].isSeen = true;
 
-    console.log(currentUser.id);
     const userChatsRef = doc(db, "userchats", currentUser.id);
 
     try {
-      console.log(userChats);
       await updateDoc(userChatsRef, {
         chats: userChats,
       });
-      console.log(chat.chatId, targetUser);
+      console.log(currentUser.blocked.includes(targetUser.id));
+      // reducer 에, blocked 처리를 담당하는 독립 펑션을 넣어주는 게 낫겠다.
+      checkTargetIsBlocked(currentUser, targetUser);
       changeChat(chat.chatId, targetUser);
     } catch (err) {
       console.error(err);

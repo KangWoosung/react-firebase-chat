@@ -4,7 +4,7 @@
 
 */
 
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "@/app/contexts/UserContextV2";
 import { db } from "@/app/lib/firebase";
 import { UserType } from "@/app/types/userType";
 import {
@@ -24,7 +24,7 @@ import React, { useState } from "react";
 const AddUser = () => {
   const [user, setUser] = useState<UserType | null>(null);
 
-  const { currentUser } = useGanymedeUserFetch();
+  const { currentUser } = useGanymedeUserFetchHook();
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

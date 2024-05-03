@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { ChatType, MessageType } from "@/app/types/chatTypes";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "@/app/contexts/UserContextV2";
 import { UserType } from "@/app/types/userType";
 import { useGanymedeChatContextHook } from "@/app/contexts/ChatContext";
 
@@ -20,7 +20,7 @@ const ChatDisplay = ({ chatId }: ChatDisplayProps) => {
   const chatTailRef = React.useRef<HTMLDivElement>(null);
   const [chatData, setChatData] = useState<ChatType | null>(null);
 
-  const { currentUser } = useGanymedeUserFetch();
+  const { currentUser } = useGanymedeUserFetchHook();
   const { targetUser } = useGanymedeChatContextHook();
 
   console.log(chatId);

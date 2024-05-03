@@ -38,7 +38,6 @@ userChats > chats
 
 */
 "use client";
-import { useState } from "react";
 import AppFrame from "./AppFrame";
 import "./index.css";
 // import Notification from "./util/notification";

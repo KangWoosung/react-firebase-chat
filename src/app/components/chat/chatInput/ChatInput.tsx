@@ -11,7 +11,7 @@ import { IoCameraOutline } from "react-icons/io5";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { ChatType, MessageType } from "@/app/types/chatTypes";
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "@/app/contexts/UserContextV2";
 import { UserType } from "@/app/types/userType";
 import { useGanymedeChatContextHook } from "@/app/contexts/ChatContext";
 import upload from "@/app/lib/upload";
@@ -42,7 +42,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
   const [uploadImg, setUploadImg] = useState<UploadImgType | null>(null);
   const uploadRef = useRef(null);
-  const { currentUser } = useGanymedeUserFetch();
+  const { currentUser } = useGanymedeUserFetchHook();
   const { targetUser } = useGanymedeChatContextHook();
 
   const handleEmoji = (e: EmojiClickEvent) => {

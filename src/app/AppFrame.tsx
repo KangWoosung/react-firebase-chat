@@ -12,7 +12,7 @@ import List from "./components/list/List";
 import LogIn from "./components/login/LogIn";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { auth } from "./lib/firebase";
-import { useGanymedeUserFetch } from "./contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "./contexts/UserContextV2";
 import {
   GanymedeChatProvider,
   useGanymedeChatContextHook,
@@ -27,7 +27,7 @@ const AppFrame = () => {
   //   useUserStore() as UseUserStoreType;
   // Ganymede version call
   const { currentUser, ganymedeUserFetch, isLoading, isError, error } =
-    useGanymedeUserFetch();
+    useGanymedeUserFetchHook();
 
   const { chatId } = useGanymedeChatContextHook();
 

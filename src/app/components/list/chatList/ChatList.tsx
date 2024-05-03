@@ -29,7 +29,7 @@ import "./chatList.css";
 import ChatSearch from "./chatSearch/ChatSearch";
 import ChatRoom from "./chatRoom/ChatRoom";
 import AddUser from "../../addUser/AddUser";
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "@/app/contexts/UserContextV2";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import {
@@ -46,8 +46,9 @@ const ChatList = () => {
   const [chats, setChats] = useState<ChatsAndUsersType[]>([]);
   const [addMode, setAddMode] = useState<boolean>(false);
 
-  const { currentUser, isLoading, isError, error } = useGanymedeUserFetch();
-  const { changeChat } = useGanymedeChatContextHook();
+  const { currentUser, isLoading, isError, error } = useGanymedeUserFetchHook();
+  const { isRecieverBlocked, changeChat, checkTargetIsBlocked } =
+    useGanymedeChatContextHook();
   // setCurrentUser(currentUser as UserType);
 
   /* promise.all 도 있어서 좀 어려워 보인다.
@@ -120,6 +121,7 @@ const ChatList = () => {
               key={i}
               lastMessage={chat.lastMessage}
               changeChat={changeChat}
+              checkTargetIsBlocked={checkTargetIsBlocked}
               targetUser={chat.user}
               chatId={chat.chatId}
               chat={chat}

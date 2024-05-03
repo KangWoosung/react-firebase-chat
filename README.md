@@ -12,7 +12,7 @@ https://github.com/safak/react-firebase-chat
 
 I am refactoring his code with TypeScript, Tailwind and some React libraries like React-Hook-Form, Zod etc. 
 
-And Zustand has been replaced by useContext & useReducer custom hooks as well just for my own interest.
+And Zustand has been replaced with useContext & useReducer custom hooks as well just for my own interest.
 
 Thanks again to Lama Dev for the lecture. It was a big step forward for me.
 

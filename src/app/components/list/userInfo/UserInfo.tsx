@@ -6,13 +6,13 @@
 import "./userInfo.css";
 import { CgAddR } from "react-icons/cg";
 import { MdOutlineVideoCameraBack } from "react-icons/md";
-import { useGanymedeUserFetch } from "@/app/contexts/UserContextV2";
+import { useGanymedeUserFetchHook } from "@/app/contexts/UserContextV2";
 
 const UserInfo = () => {
   // zuStand version call
   // const { currentUser } = useUserStore() as UseUserStoreType;
   // ganymede version call
-  const { currentUser, isLoading, isError, error } = useGanymedeUserFetch();
+  const { currentUser, isLoading, isError, error } = useGanymedeUserFetchHook();
 
   console.log(currentUser);
 
